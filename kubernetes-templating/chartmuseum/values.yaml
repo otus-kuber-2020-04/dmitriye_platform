@@ -1,3 +1,7 @@
+env:
+  open:
+    DISABLE_API: false
+
 ## Ingress for load balancer
 ingress:
   enabled: true
