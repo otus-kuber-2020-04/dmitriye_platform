@@ -1,0 +1,48 @@
+repositories:
+  - name: stable
+    url: https://kubernetes-charts.storage.googleapis.com
+  - name: jetstack
+    url: https://charts.jetstack.io
+  - name: harbor
+    url: https://helm.goharbor.io
+
+environments:
+  production:
+    values:
+      - ./environments/{{ .Environment.Name }}/_global.yaml
+    missingFileHandler: Error
+
+releases:
+  - name: nginx-ingress
+    namespace: nginx-ingress
+    chart: stable/nginx-ingress
+
+  - name: cert-manager
+    namespace: cert-manager
+    chart: jetstack/cert-manager
+    set:
+      - name: installCRDs
+        value: true
+    hooks:
+      - events: ["postsync"]
+        command: "kubectl"
+        args: ["apply", "-f", "./environments/{{`{{ .Environment.Name }}`}}/letsencrypt-cluster-issuer.yaml"]
+        showlogs: true
+
+  - name: chartmuseum
+    namespace: chartmuseum
+    chart: stable/chartmuseum
+    values:
+      - ./environments/{{ .Environment.Name }}/chartmuseum-values.yaml
+    set:
+      - name: ingress.hosts[0].name
+        value: chartmuseum.{{ .Environment.Values.domain }}
+
+  - name: harbor
+    namespace: harbor
+    chart: harbor/harbor
+    values:
+        - ./environments/{{ .Environment.Name }}/harbor-values.yaml
+    set:
+      - name: expose.ingress.hosts.core
+        value: harbor.{{ .Environment.Values.domain }}
