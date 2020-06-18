@@ -14,8 +14,7 @@ spec:
         app: node-exporter
     spec:
       tolerations:
-        - key: node-role.kubernetes.io/master
-          effect: NoSchedule
+        - operator: "Exists"
       containers:
         - name: server
           image: prom/node-exporter:latest
