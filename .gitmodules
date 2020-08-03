@@ -1,0 +1,3 @@
+[submodule "kubernetes-debug/kit/netperf-operator"]
+	path = kubernetes-debug/kit/netperf-operator
+	url = git@github.com:piontec/netperf-operator.git
