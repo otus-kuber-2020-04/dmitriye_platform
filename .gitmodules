@@ -1,3 +1,6 @@
 [submodule "kubernetes-debug/kit/netperf-operator"]
 	path = kubernetes-debug/kit/netperf-operator
 	url = git@github.com:piontec/netperf-operator.git
+[submodule "kubernetes-storage/csi-driver-host-path"]
+	path = kubernetes-storage/csi-driver-host-path
+	url = git@github.com:kubernetes-csi/csi-driver-host-path.git
